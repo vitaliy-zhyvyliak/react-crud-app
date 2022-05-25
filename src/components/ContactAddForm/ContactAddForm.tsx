@@ -7,7 +7,6 @@ export const ContactAddForm: React.FC = React.memo(() => {
   const [toggledInput, setToggledInput] = useState(false);
   const [nameFromInput, setNameFromInput] = useState('');
   const [phoneFromInput, setPhoneFromInput] = useState('');
-  const [selectedId, setSelectedId] = useState<number | null>(null);
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
@@ -31,7 +30,7 @@ export const ContactAddForm: React.FC = React.memo(() => {
     setToggledInput(false);
   }
 
-  const updateContact = (newName: string, newPhone: string, id: number) => {
+  const updateContact = (newName: string, newPhone: string, id: number | null) => {
     setContacts(
       contacts.map((item: Contact) => {
         if (item.id === id) {
@@ -94,7 +93,7 @@ export const ContactAddForm: React.FC = React.memo(() => {
           </div>
         </form>
       )}
-      <ContactsList constacts={contacts} saveChanges={updateContact} selectId={setSelectedId}/>
+      <ContactsList constacts={contacts} saveChanges={updateContact} />
     </>
   )
 })
