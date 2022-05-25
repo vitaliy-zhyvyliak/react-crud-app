@@ -99,7 +99,7 @@ export const ContactAddForm: React.FC = React.memo(() => {
           </div>
         </form>
       )}
-      <ContactsList constacts={contacts} saveChanges={updateContact} deleteContact={deleteContact}/>
+      <ContactsList contacts={contacts} saveChanges={updateContact} deleteContact={deleteContact}/>
     </>
   )
 })

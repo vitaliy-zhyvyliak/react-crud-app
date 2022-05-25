@@ -29,6 +29,8 @@
   }
 
   &__add {
+    cursor: pointer;
+
     &::after {
       margin-top: 10px;
       display: block;
@@ -67,6 +69,7 @@
 
   &__button {
     width: 60px;
+    cursor: pointer;
   }
 
   &__buttons {
@@ -95,7 +98,17 @@
     margin-top: 15px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px 0;
+    background-color: lightblue;
+  }
+
+  &__empty {
+    margin-top: 40px;
+    font-size: 20px;
   }
 }
 

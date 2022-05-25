@@ -2,27 +2,34 @@ import React, { useState } from 'react'
 import { Contact } from '../../types';
 
 type Props = {
-  constacts: Contact[];
+  contacts: Contact[];
   saveChanges: (newName: string, newPhone: string, id: number | null) => void;
   deleteContact: (id: number | null) => void;
 }
 
 export const ContactsList: React.FC<Props> = React.memo((
   {
-    constacts,
+    contacts,
     saveChanges,
     deleteContact,
   }
 ) => {
-  const [tempName, setTempName] = useState('');
-  const [tempPhone, setTempPhone] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [tempName, setTempName] = useState('');
+  const [tempPhone, setTempPhone] = useState('');
 
-
-  const handleEditClick = (id: number) => {
+  const handleEditClick = (id: number, name: string, phone: string) => {
     setIsEditing(true);
     setSelectedId(id);
+    setTempName(name);
+    setTempPhone(phone);
+  }
+
+  const cancelEdit = () => {
+    setIsEditing(false);
+    setTempName('');
+    setTempPhone('');
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>, newName: string, newPhone: string, id: number | null) => {
@@ -37,27 +44,30 @@ export const ContactsList: React.FC<Props> = React.memo((
 
   return (
     <>
+      {!contacts.length && (
+        <p className='contacts__empty'>No Contacts yet</p>
+      )}
       <ul className='contacts__list'>
-        {constacts.map((item) => (
+        {contacts.map((item) => (
           <li
             key={item.id}
             className='contacts__item'
           >
             <p className='contacts__name'>
-              {item.name}
+              <b>Name:</b> {item.name}
             </p>
             <p className='contacts__phone'>
-              {item.phoneNumber}
+              <b>Phone:</b> {item.phoneNumber}
             </p>
             <div className="buttons-wrapper">
               <button
-                className='contacts__edit'
-                onClick={() => handleEditClick(item.id)}
+                className='contacts__button'
+                onClick={() => handleEditClick(item.id, item.name, item.phoneNumber)}
               >
                 Edit
               </button>
               <button
-                className='contacts__delete'
+                className='contacts__button'
                 onClick={() => deleteContact(item.id)}
               >
                 Delete
@@ -85,8 +95,18 @@ export const ContactsList: React.FC<Props> = React.memo((
             required={true}
           />
           <div className="buttons-wrapper">
-            <button className='contacts__edit-cancel' onClick={() => setIsEditing(false)}>Cancel</button>
-            <button className='contacts__edit-save' type='submit'>Save</button>
+            <button
+              className='contacts__edit-cancel'
+              onClick={() => cancelEdit()}
+            >
+              Cancel
+            </button>
+            <button
+              className='contacts__edit-save'
+              type='submit'
+            >
+              Save
+            </button>
           </div>
         </form>
       )}
