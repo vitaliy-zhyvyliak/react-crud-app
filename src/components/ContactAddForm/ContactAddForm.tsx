@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Contact } from '../../types';
-import './ContactAddForm.scss';
+import { ContactsList } from '../ContactsList/ContactsList';
 
 export const ContactAddForm: React.FC = React.memo(() => {
   const [contacts, setContacts] = useState(JSON.parse(localStorage.getItem('contacts') || '[]'));
   const [toggledInput, setToggledInput] = useState(false);
   const [nameFromInput, setNameFromInput] = useState('');
   const [phoneFromInput, setPhoneFromInput] = useState('');
+  const [selectedId, setSelectedId] = useState<number | null>(null);
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
@@ -21,7 +22,7 @@ export const ContactAddForm: React.FC = React.memo(() => {
       phoneNumber: phoneFromInput
     };
 
-    if(nameFromInput && phoneFromInput) {
+    if (nameFromInput && phoneFromInput) {
       setNameFromInput('');
       setPhoneFromInput('');
     }
@@ -30,23 +31,39 @@ export const ContactAddForm: React.FC = React.memo(() => {
     setToggledInput(false);
   }
 
+  const updateContact = (newName: string, newPhone: string, id: number) => {
+    setContacts(
+      contacts.map((item: Contact) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            name: newName,
+            phoneNumber: newPhone,
+          };
+        }
+
+        return item;
+      }),
+    );
+  };
+
   return (
     <>
       <div
-        className='header__add'
+        className='contacts__add'
         onClick={() => setToggledInput(true)}
       >
         {!toggledInput &&
-          <p className='header__add-text'>Add Contact</p>
+          <p className='contacts__add-text'>Add Contact</p>
         }
       </div>
       {toggledInput && (
-        <form 
-          className='header__form'
+        <form
+          className='contacts__form'
           onSubmit={addContact}
         >
           <input
-            className='header__name'
+            className='contacts__input'
             type="text"
             placeholder="Name"
             value={nameFromInput}
@@ -54,29 +71,30 @@ export const ContactAddForm: React.FC = React.memo(() => {
             required={true}
           />
           <input
-            className='header__phone'
+            className='contacts__input'
             type="text"
             placeholder="Phone number"
             value={phoneFromInput}
             onChange={(e) => setPhoneFromInput(e.target.value)}
             required={true}
           />
-          <div className="header__buttons">
-            <button
-              onClick={() => setToggledInput(false)}
-              className='header__button'
-            >
-              Cancel
-            </button>
+          <div className="contacts__buttons">
             <button
               type='submit'
-              className='header__button'
+              className='contacts__button'
             >
               Add
+            </button>
+            <button
+              onClick={() => setToggledInput(false)}
+              className='contacts__button'
+            >
+              Cancel
             </button>
           </div>
         </form>
       )}
+      <ContactsList constacts={contacts} saveChanges={updateContact} selectId={setSelectedId}/>
     </>
   )
 })

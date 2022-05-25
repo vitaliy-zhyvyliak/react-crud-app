@@ -7,12 +7,10 @@ function App() {
     <div className="App">
       <div className="contacts">
         <div className="container">
-          <div className="contacts__header header">
-            <h1 className="header__title">
+          <div className="contacts__title">
               Contacts
-            </h1>
-            <ContactAddForm />
           </div>
+          <ContactAddForm />
         </div>
       </div>
     </div>
