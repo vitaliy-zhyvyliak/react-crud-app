@@ -4,12 +4,14 @@ import { Contact } from '../../types';
 type Props = {
   constacts: Contact[];
   saveChanges: (newName: string, newPhone: string, id: number | null) => void;
+  deleteContact: (id: number | null) => void;
 }
 
 export const ContactsList: React.FC<Props> = React.memo((
   {
     constacts,
     saveChanges,
+    deleteContact,
   }
 ) => {
   const [tempName, setTempName] = useState('');
@@ -56,7 +58,7 @@ export const ContactsList: React.FC<Props> = React.memo((
               </button>
               <button
                 className='contacts__delete'
-                onClick={() => setSelectedId(item.id)}
+                onClick={() => deleteContact(item.id)}
               >
                 Delete
               </button>

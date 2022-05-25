@@ -46,6 +46,12 @@ export const ContactAddForm: React.FC = React.memo(() => {
     );
   };
 
+  const deleteContact = (id: number | null) => {
+    const filteredContacts = contacts.filter((item: Contact) => item.id !== id);
+
+    setContacts(filteredContacts);
+  };
+
   return (
     <>
       <div
@@ -93,7 +99,7 @@ export const ContactAddForm: React.FC = React.memo(() => {
           </div>
         </form>
       )}
-      <ContactsList constacts={contacts} saveChanges={updateContact} />
+      <ContactsList constacts={contacts} saveChanges={updateContact} deleteContact={deleteContact}/>
     </>
   )
 })
